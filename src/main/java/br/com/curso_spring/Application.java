@@ -25,9 +25,11 @@ public class Application {
 	@Bean
 	public CommandLineRunner init(@Autowired Clientes clientes) {
 		return args -> {
+			System.out.println("Salvando");
 			clientes.salvar(new Cliente("Arthur"));
 			clientes.salvar(new Cliente("Nayra"));
 			
+			System.out.println("Mostrando");
 			List<Cliente> todos = clientes.obterTodos();
 			todos.forEach(System.out::println);
 			
@@ -36,11 +38,16 @@ public class Application {
 				clientes.atualizar(c);
 			});
 			
+			System.out.println("Atualizando");
 			todos = clientes.obterTodos();
 			todos.forEach(System.out::println);
 			
+			System.out.println("Procurando");
 			clientes.buscarPorNome("Na").forEach(System.out::println);;
-			clientes.deletar(2);
+			System.out.println("Deletando");
+			clientes.obterTodos().forEach(c ->{
+				clientes.deletar(c);
+			});
 			//todos = clientes.obterTodos();
 			//todos.forEach(System.out::println);
 		};
