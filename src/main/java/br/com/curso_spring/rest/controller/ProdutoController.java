@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
+import static org.springframework.http.HttpStatus.*;
 import br.com.curso_spring.domain.entity.Produto;
 import br.com.curso_spring.domain.repository.Produtos;
 
@@ -31,13 +31,13 @@ public class ProdutoController {
 	//-CRIAR, -ATUALIZAR, DELETAR, -PROCURAR
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(CREATED)
 	public Produto save(@RequestBody Produto produto) {
 		return produtos.save(produto);
 	}
 	
 	@PutMapping("{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(NO_CONTENT)
 	public void update(@PathVariable("id") Integer id, 
 						@RequestBody Produto produto) {
 		
@@ -53,7 +53,7 @@ public class ProdutoController {
 	}
 	
 	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
+	@ResponseStatus(OK)
 	public List<Produto> find (Produto produto){
 		ExampleMatcher matcher = ExampleMatcher.matching()
 								.withIgnoreCase()
@@ -65,8 +65,18 @@ public class ProdutoController {
 		
 	}
 	
+	@GetMapping("{id}")
+	@ResponseStatus(NO_CONTENT)
+	public Produto getById (@PathVariable Integer id){
+		return produtos
+					.findById(id)
+					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+					
+		
+	}
+	
 	@DeleteMapping("{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(NO_CONTENT)
 	public void delete(@PathVariable Integer id) {
 		produtos.delete(produtos
 						.findById(id)
