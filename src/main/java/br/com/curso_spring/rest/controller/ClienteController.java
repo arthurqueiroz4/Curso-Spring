@@ -1,11 +1,11 @@
 package br.com.curso_spring.rest.controller;
 
+import java.util.List;
 import java.util.Optional;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,19 +16,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.com.curso_spring.domain.entity.Cliente;
 import br.com.curso_spring.domain.repository.Clientes;
 
-@Controller
+@RestController
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
 	@Autowired
 	private Clientes clientes;
 	
 	//OBTER DADOS DO FRONT -> GET
-	@GetMapping("/api/clientes/{id}")
-	@ResponseBody
+	@GetMapping("{id}")
 	public ResponseEntity<Cliente> getClienteById(@PathVariable("id") Integer id) {
 		Optional<Cliente> cliente = clientes.findById(id);
 		if (cliente.isPresent()) {
@@ -40,16 +41,14 @@ public class ClienteController {
 	}
 	
 	//SALVAR RECURSO NO SERVIDOR / QUANDO O RECURSO NAO EXISTE NO SERVIDOR
-	@PostMapping("/api/clientes/salvar")
-	@ResponseBody
+	@PostMapping("salvar")
 	public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
 		Cliente clientesalvo = clientes.save(cliente);
 		return ResponseEntity.ok(clientesalvo);
 		
 	}
 	
-	@DeleteMapping("/api/clientes/{id}")
-	@ResponseBody
+	@DeleteMapping("{id}")
 	public ResponseEntity<Cliente> delete(@PathVariable("id") Integer id) {
 		Optional<Cliente> cliente = clientes.findById(id);
 		if (cliente.isPresent()) {
@@ -60,17 +59,32 @@ public class ClienteController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@PutMapping("/api/clientes/{id}")
-	@ResponseBody
+	@PutMapping("{id}")
 	public ResponseEntity<Object> update(@PathVariable("id") Integer id,
 											@RequestBody Cliente cliente){
 		return clientes
-				.findById(id)
-				.map(clienteExistente -> {
-					cliente.setId(clienteExistente.getId());
+				.findById(id) //esse metodo retorna um optional
+				.map(clienteExistente -> {	//se tiver valor presente, retorna um optional 
+											//com o resultado da funcao passada
+					cliente.setId(clienteExistente.getId());//troca o id do cliente que foi passado e
+															//preenche com o id que ja existia daquele
+															//usuario
 					clientes.save(cliente);
 					return ResponseEntity.noContent().build();
-				}).orElseGet(()-> ResponseEntity.notFound().build());
-		
+				}).orElseGet(()-> ResponseEntity.notFound().build());//se o valor estiver presente, retorna o valor, senao
+																	//retorna o parametro passado
 	}
+	
+	@GetMapping
+	public ResponseEntity<Object> find (Cliente filtro){
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()					 //permite algumas configurações
+												.withStringMatcher(StringMatcher.CONTAINING);//como o ignoreCase e a forma de
+																							//pesquisar a string.
+		Example<Cliente> example = Example.of(filtro, matcher);// pega as propriedades que estao populadas 
+																//no parametro e cria um example
+		List<Cliente> lista = clientes.findAll(example); 
+		return ResponseEntity.ok(lista);
+																
+	}
+	
 }

@@ -24,6 +24,9 @@ public class Cliente {
 	@Column(name="nome", length=100)
 	private String nome;
 	
+	@Column(name="cpf")
+	private String cpf;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private Set<Pedido> pedidos;
@@ -76,6 +79,16 @@ public class Cliente {
 
 	public void setPedidos(Set<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+
+	public String getCpf() {
+		return cpf;
+	}
+
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 	
 	
