@@ -10,4 +10,5 @@ import br.com.curso_spring.domain.entity.Pedido;
 public interface Pedidos extends JpaRepository<Pedido, Integer>{
 
 	List<Pedido> findByCliente(Cliente cliente);
+	
 }

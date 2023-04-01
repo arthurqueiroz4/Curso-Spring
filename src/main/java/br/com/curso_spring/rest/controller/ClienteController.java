@@ -78,7 +78,7 @@ public class ClienteController {
 	}
 	
 	@GetMapping
-	@ResponseStatus(HttpStatus.ACCEPTED)
+	@ResponseStatus(HttpStatus.OK)
 	public List<Cliente> find (Cliente filtro){
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()					 //permite algumas configurações
 												.withStringMatcher(StringMatcher.CONTAINING);//como o ignoreCase e a forma de
