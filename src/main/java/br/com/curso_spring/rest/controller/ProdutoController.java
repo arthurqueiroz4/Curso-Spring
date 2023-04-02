@@ -26,14 +26,14 @@ import br.com.curso_spring.domain.repository.Produtos;
 public class ProdutoController {
 
 	@Autowired
-	private Produtos produtos;
+	private Produtos repository;
 	
 	//-CRIAR, -ATUALIZAR, DELETAR, -PROCURAR
 	
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public Produto save(@RequestBody Produto produto) {
-		return produtos.save(produto);
+		return repository.save(produto);
 	}
 	
 	@PutMapping("{id}")
@@ -41,11 +41,11 @@ public class ProdutoController {
 	public void update(@PathVariable("id") Integer id, 
 						@RequestBody Produto produto) {
 		
-		produtos.
+		repository.
 				findById(id)
 				.map(produtoEncontrado -> {
 					produto.setId(produtoEncontrado.getId());
-					produtos.save(produto);
+					repository.save(produto);
 					return produtoEncontrado;
 				})
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
@@ -61,14 +61,13 @@ public class ProdutoController {
 		
 		Example<Produto> example = Example.of(produto, matcher);
 		
-		return produtos.findAll(example);
+		return repository.findAll(example);
 		
 	}
 	
 	@GetMapping("{id}")
-	@ResponseStatus(NO_CONTENT)
 	public Produto getById (@PathVariable Integer id){
-		return produtos
+		return repository
 					.findById(id)
 					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
 					
@@ -78,7 +77,7 @@ public class ProdutoController {
 	@DeleteMapping("{id}")
 	@ResponseStatus(NO_CONTENT)
 	public void delete(@PathVariable Integer id) {
-		produtos.delete(produtos
+		repository.delete(repository
 						.findById(id)
 						.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado")));
 	}

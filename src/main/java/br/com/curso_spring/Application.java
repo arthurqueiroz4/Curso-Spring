@@ -24,15 +24,6 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
     
-    @Bean
-    public CommandLineRunner command (@Autowired Clientes clientes) {
-    	return args -> {
-    		clientes.save(new Cliente("Arthur"));
-    		
-    		
-    	};
-    }
-    
     @Value("${application.name}")
 	private String applicationName;
 	

@@ -3,6 +3,7 @@ package br.com.curso_spring.domain.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Pedido {
 
@@ -34,41 +44,5 @@ public class Pedido {
 	
 	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens;
-	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	public LocalDate getDatapedido() {
-		return datapedido;
-	}
-	public void setDatapedido(LocalDate datapedido) {
-		this.datapedido = datapedido;
-	}
-	public BigDecimal getTotal() {
-		return total;
-	}
-	public void setTotal(BigDecimal total) {
-		this.total = total;
-	}
-	public List<ItemPedido> getItens() {
-		return itens;
-	}
-	public void setItens(List<ItemPedido> itens) {
-		this.itens = itens;
-	}
-	@Override
-	public String toString() {
-		return "Pedido [id=" + id + ", datapedido=" + datapedido + ", total=" + total + "]";
-	}
-	
 	
 }
