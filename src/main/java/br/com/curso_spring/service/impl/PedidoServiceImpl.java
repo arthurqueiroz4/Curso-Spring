@@ -16,6 +16,7 @@ import br.com.curso_spring.domain.repository.Clientes;
 import br.com.curso_spring.domain.repository.ItensPedidos;
 import br.com.curso_spring.domain.repository.Pedidos;
 import br.com.curso_spring.domain.repository.Produtos;
+import br.com.curso_spring.exception.PedidoNaoEncontradoException;
 import br.com.curso_spring.exception.RegraNegocioException;
 import br.com.curso_spring.rest.dto.InformacaoItemPedidoDTO;
 import br.com.curso_spring.rest.dto.ItemPedidoDTO;
@@ -83,4 +84,17 @@ public class PedidoServiceImpl implements PedidoService{
 	public Optional<Pedido> obterPedidoCompleto(Integer id) {
 		return pedidosRepository.findByIdFetchItens(id);
 	}
+
+	@Override
+	@Transactional
+	public void atualizarStatus(Integer id, StatusPedido statuspedido) {
+		pedidosRepository
+				.findById(id)
+				.map(pedido -> {
+					pedido.setStatus(statuspedido);
+					return pedidosRepository.save(pedido);
+				}).orElseThrow(() -> new PedidoNaoEncontradoException());
+		
+	}
+	
 }

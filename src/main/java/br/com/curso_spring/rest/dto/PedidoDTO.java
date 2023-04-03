@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.curso_spring.domain.entity.Cliente;
@@ -17,7 +19,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PedidoDTO {
 
+	@NotNull(message = "Informe o código do Cliente")
 	private Integer cliente;
+	
+	@NotNull(message = "Campo total do pedido é obrigatório")
 	private BigDecimal total;
 	private List<ItemPedidoDTO> items;
 }

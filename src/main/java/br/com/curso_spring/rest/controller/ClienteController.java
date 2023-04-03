@@ -2,6 +2,9 @@ package br.com.curso_spring.rest.controller;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -43,7 +46,7 @@ public class ClienteController {
 	//SALVAR RECURSO NO SERVIDOR / QUANDO O RECURSO NAO EXISTE NO SERVIDOR
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)//Http correto quando cria algo no servidor
-	public Cliente save(@RequestBody Cliente cliente) {
+	public Cliente save(@RequestBody @Valid Cliente cliente) {
 		return clientes.save(cliente);
 	}
 	
@@ -62,7 +65,7 @@ public class ClienteController {
 	@PutMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)//codigo de status de sucesso porem nao é necessário retonar algo
 	public void update(@PathVariable("id") Integer id,
-											@RequestBody Cliente cliente){
+											@RequestBody @Valid Cliente cliente){
 		clientes
 				.findById(id) //esse metodo retorna um optional
 				.map(clienteExistente -> {	//se tiver valor presente, retorna um optional 

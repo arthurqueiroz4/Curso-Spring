@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.curso_spring.domain.entity.enums.StatusPedido;
+import br.com.curso_spring.validation.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,6 +50,7 @@ public class Pedido {
 	@Column(name = "status")
 	private StatusPedido status;
 	
+	@NotEmptyList(message = "Pedido não pode ser realizado sem itens")
 	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens;
 	
