@@ -1,9 +1,15 @@
 package br.com.curso_spring.service;
 
+import java.util.Optional;
+
 import br.com.curso_spring.domain.entity.Pedido;
 import br.com.curso_spring.rest.dto.PedidoDTO;
 
 public interface PedidoService {
 
-	public Pedido salvar(PedidoDTO dto);
+	Pedido salvar(PedidoDTO dto);
+	
+	Optional<Pedido> obterPedidoService(Integer id);
+
+	Optional<Pedido> obterPedidoCompleto(Integer id);
 }

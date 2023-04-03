@@ -2,6 +2,7 @@ package br.com.curso_spring.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -10,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.curso_spring.domain.entity.ItemPedido;
 import br.com.curso_spring.domain.entity.Pedido;
 import br.com.curso_spring.domain.entity.Produto;
+import br.com.curso_spring.domain.entity.enums.StatusPedido;
 import br.com.curso_spring.domain.repository.Clientes;
 import br.com.curso_spring.domain.repository.ItensPedidos;
 import br.com.curso_spring.domain.repository.Pedidos;
 import br.com.curso_spring.domain.repository.Produtos;
 import br.com.curso_spring.exception.RegraNegocioException;
+import br.com.curso_spring.rest.dto.InformacaoItemPedidoDTO;
 import br.com.curso_spring.rest.dto.ItemPedidoDTO;
 import br.com.curso_spring.rest.dto.PedidoDTO;
 import br.com.curso_spring.service.PedidoService;
@@ -35,7 +38,7 @@ public class PedidoServiceImpl implements PedidoService{
 		Pedido pedido = new Pedido();
 		pedido.setTotal(dto.getTotal());
 		pedido.setDatapedido(LocalDate.now());
-
+		pedido.setStatus(StatusPedido.REALIZADO);
 		pedido.setCliente(clientesRepository
 							.findById(dto.getCliente())
 							.orElseThrow(() -> new RegraNegocioException("Codigo de cliente inválido")));
@@ -69,5 +72,15 @@ public class PedidoServiceImpl implements PedidoService{
                     itemPedido.setProduto(produto);
                     return itemPedido;
                 }).collect(Collectors.toList());
+	}
+
+	@Override
+	public Optional<Pedido> obterPedidoService(Integer id) {
+		return pedidosRepository.findByIdFetchItens(id);
+	}
+
+	@Override
+	public Optional<Pedido> obterPedidoCompleto(Integer id) {
+		return pedidosRepository.findByIdFetchItens(id);
 	}
 }
