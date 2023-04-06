@@ -6,3 +6,4 @@ public class PedidoNaoEncontradoException extends RuntimeException{
 		super("Pedido não encontrado");
 	}
 }
+	

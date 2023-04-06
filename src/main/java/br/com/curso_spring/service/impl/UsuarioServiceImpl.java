@@ -1,17 +1,19 @@
 package br.com.curso_spring.service.impl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.userdetails.User;
 import br.com.curso_spring.domain.entity.Usuario;
 import br.com.curso_spring.domain.repository.UsuarioRepository;
+import br.com.curso_spring.exception.SenhaInvalidaException;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService{
@@ -24,7 +26,11 @@ public class UsuarioServiceImpl implements UserDetailsService{
 	
 	@Transactional
 	public Usuario save(Usuario usuario) {
-		return usuarioRepository.save(usuario);
+		return usuarioRepository.saveAndFlush(usuario);
+	}
+	
+	public List<Usuario> listar(){
+		return usuarioRepository.findAll();
 	}
 	
 	@Override
@@ -41,6 +47,12 @@ public class UsuarioServiceImpl implements UserDetailsService{
 					.password(usuario.getSenha())
 					.roles(roles)
 					.build();
+	}
+	public UserDetails autenticar(Usuario usuario) {
+		UserDetails user = loadUserByUsername(usuario.getLogin());
+		boolean senhasBatem = encoder.matches(usuario.getSenha(), user.getPassword());
+		if(senhasBatem) return user;
+		throw new SenhaInvalidaException();
 	}
 
 }
