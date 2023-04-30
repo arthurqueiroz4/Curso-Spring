@@ -26,50 +26,6 @@ Para executar este projeto, siga as instruções abaixo:
 - ```mvn spring-boot:run```
 Isso iniciará o servidor localmente e você poderá acessar o aplicativo no navegador em http://localhost:8080.
 
-## Estrutura do Projeto
-
-O projeto está organizado da seguinte forma:
-```Curso-Spring/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── exemplo/
-│   │   │           ├── config/
-│   │   │           │   ├── AppConfig.java
-│   │   │           │   └── WebConfig.java
-│   │   │           ├── controller/
-│   │   │           │   └── HomeController.java
-│   │   │           ├── model/
-│   │   │           │   └── Usuario.java
-│   │   │           ├── repository/
-│   │   │           │   └── UsuarioRepository.java
-│   │   │           └── service/
-│   │   │               ├── UsuarioService.java
-│   │   │               └── UsuarioServiceImpl.java
-│   │   └── resources/
-│   │       ├── static/
-│   │       │   └── css/
-│   │       │       └── estilo.css
-│   │       ├── templates/
-│   │       │   ├── home.html
-│   │       │   └── usuarios.html
-│   │       ├── application.properties
-│   │       ├── banner.txt
-│   │       └── data.sql
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── exemplo/
-│                   ├── CursoSpringApplicationTests.java
-│                   └── UsuarioRepositoryTests.java
-├── .gitignore
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-└── README.md
-```
-
 
 Contato
 
